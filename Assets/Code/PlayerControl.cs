@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PlayerControl : MonoBehaviour
+public class Mover : MonoBehaviour
 {
     public Transform Target;
 
@@ -47,7 +47,7 @@ public class PlayerControl : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             bool hasHit = Physics.Raycast(ray, out RaycastHit hit);
-
+            
             if (hasHit)
             {
                 Target.position = hit.point;
