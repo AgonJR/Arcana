@@ -43,7 +43,7 @@ public class Mover : MonoBehaviour
 
     private void DetectMouseInput()
     {
-        if ( Input.GetMouseButtonDown(0) )
+        if ( Input.GetMouseButton(0) )
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             bool hasHit = Physics.Raycast(ray, out RaycastHit hit);
