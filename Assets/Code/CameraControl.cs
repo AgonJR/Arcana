@@ -4,7 +4,7 @@ public class CameraControl : MonoBehaviour
 {
     public Transform FollowTarget;
 
-    void Update()
+    void LateUpdate()
     {
         transform.position = FollowTarget.position;
     }
