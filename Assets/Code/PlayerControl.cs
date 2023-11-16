@@ -1,15 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Mover : MonoBehaviour
+public class PlayerControl : MonoBehaviour
 {
+    [Header("Movement")]
     public Transform Target;
-
     private NavMeshAgent nmAgent;
+
+    [Header("Interaction")]
+    public List<GameObject> InteractableObjectsInRange;
+    
 
     void Start()
     {
         nmAgent = GetComponent<NavMeshAgent>();
+        InteractableObjectsInRange = new List<GameObject>();
     }
 
     void Update()
@@ -20,6 +26,8 @@ public class Mover : MonoBehaviour
 
     private void DetectPlayerInput()
     {
+        // Movement ----
+
         float moveX = 0.0f; 
         float moveY = 0.0f;
 
@@ -39,6 +47,18 @@ public class Mover : MonoBehaviour
             Target.position = new Vector3(transform.position.x + moveX, transform.position.y, transform.position.z + moveY);
             nmAgent.SetDestination(Target.position);
         }
+
+        // Interaction -----
+        
+        if ( Input.GetKeyDown(KeyCode.E) )
+        {
+            if ( InteractableObjectsInRange.Count > 0 )
+            {
+                Debug.Log(" ---- PLAYER Interacted With [" + InteractableObjectsInRange[0].name + "]");
+                InteractableObjectsInRange[0].GetComponent<NPCControl>().ToggleColor();
+            }
+        }
+
     }
 
     private void DetectMouseInput()

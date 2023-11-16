@@ -3,21 +3,31 @@ using UnityEngine;
 public class NPCControl : MonoBehaviour
 {
 
-    void Start()
+    private bool colorToggler = false;
+    public void ToggleColor()
     {
-
-    }
-
-    void Update()
-    {
-        
+        GetComponent<MeshRenderer>().material.color = colorToggler ? Color.red : Color.blue;
+        colorToggler = !colorToggler;
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        if ( collider.gameObject.tag.Equals("Player") )
+        PlayerControl pc = collider.gameObject.GetComponent<PlayerControl>();
+
+        if ( pc != null )
         {
-            Debug.Log(" --- Player Reached Interaction Radius ! ");
+            pc.InteractableObjectsInRange.Add(gameObject);
+        }
+    }
+
+
+    void OnTriggerExit(Collider collider)
+    {
+        PlayerControl pc = collider.gameObject.GetComponent<PlayerControl>();
+
+        if ( pc != null )
+        {
+            pc.InteractableObjectsInRange.Remove(gameObject);
         }
     }
 
