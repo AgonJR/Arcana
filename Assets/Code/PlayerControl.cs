@@ -9,13 +9,13 @@ public class PlayerControl : MonoBehaviour
     private NavMeshAgent nmAgent;
 
     [Header("Interaction")]
-    public List<GameObject> InteractableObjectsInRange;
+    public List<InteractableObject> InteractableObjectsInRange;
     
 
     void Start()
     {
         nmAgent = GetComponent<NavMeshAgent>();
-        InteractableObjectsInRange = new List<GameObject>();
+        InteractableObjectsInRange = new List<InteractableObject>();
     }
 
     void Update()
@@ -50,12 +50,12 @@ public class PlayerControl : MonoBehaviour
 
         // Interaction -----
         
-        if ( Input.GetKeyDown(KeyCode.E) )
+        if ( Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Space) )
         {
             if ( InteractableObjectsInRange.Count > 0 )
             {
                 Debug.Log(" ---- PLAYER Interacted With [" + InteractableObjectsInRange[0].name + "]");
-                InteractableObjectsInRange[0].GetComponent<NPCControl>().ToggleColor();
+                InteractableObjectsInRange[0].ProcessInteraction();
             }
         }
 
