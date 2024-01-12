@@ -63,6 +63,7 @@ public class PlayerControl : MonoBehaviour
 
     private void DetectMouseInput()
     {
+        // Move on Mouse Down
         if ( Input.GetMouseButton(0) )
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -72,6 +73,31 @@ public class PlayerControl : MonoBehaviour
             {
                 Target.position = hit.point;
                 nmAgent.SetDestination(Target.position);
+            }
+        }
+
+        // Interact on Mouse Up
+        if ( Input.GetMouseButtonUp(0) )
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            bool hasHit = Physics.Raycast(ray, out RaycastHit hit);
+            
+            if (hasHit)
+            {
+                InteractableObject targetInteractable = hit.transform.gameObject.GetComponent<InteractableObject>();
+
+                if ( targetInteractable != null )
+                {
+                    if (InteractableObjectsInRange.Contains(targetInteractable))
+                    {
+                        Debug.Log(" ---- PLAYER CLICKED on INTERACTABLE OBJECT in Range  [" + targetInteractable.name + "]");
+                        targetInteractable.ProcessInteraction();
+                    }
+                    else
+                    {
+                        Debug.Log(" ---- PLAYER CLICKED on INTERACTABLE OBJECT ~ OUT of Range !  [" + targetInteractable.name + "]");
+                    }
+                }
             }
         }
     }
