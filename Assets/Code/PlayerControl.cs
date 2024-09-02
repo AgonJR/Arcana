@@ -6,15 +6,14 @@ public class PlayerControl : MonoBehaviour
 {
     [Header("Movement")]
     public Transform Target;
-    private NavMeshAgent nmAgent;
+    public float speed = 1.0f;
 
     [Header("Interaction")]
     public List<InteractableObject> InteractableObjectsInRange;
-    
 
+    
     void Start()
     {
-        nmAgent = GetComponent<NavMeshAgent>();
         InteractableObjectsInRange = new List<InteractableObject>();
     }
 
@@ -22,6 +21,8 @@ public class PlayerControl : MonoBehaviour
     {
         DetectMouseInput();
         DetectPlayerInput();
+
+        ProcessMovement();
     }
 
     private void DetectPlayerInput()
@@ -44,8 +45,7 @@ public class PlayerControl : MonoBehaviour
 
         if ( moveX != 0 || moveY != 0 )
         {
-            Target.position = new Vector3(transform.position.x + moveX, transform.position.y, transform.position.z + moveY);
-            nmAgent.SetDestination(Target.position);
+            Target.position = new Vector3(transform.position.x + moveX, Target.position.y, transform.position.z + moveY);
         }
 
         // Interaction -----
@@ -71,8 +71,7 @@ public class PlayerControl : MonoBehaviour
             
             if (hasHit)
             {
-                Target.position = hit.point;
-                nmAgent.SetDestination(Target.position);
+                Target.position = new Vector3(hit.point.x, Target.position.y, hit.point.z);
             }
         }
 
@@ -100,6 +99,16 @@ public class PlayerControl : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    private void ProcessMovement()
+    {
+        Vector3 direction = (Target.position - transform.position).normalized;
+
+        transform.position = Vector3.MoveTowards(transform.position, Target.position, Time.deltaTime * speed);
+
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
 }

@@ -4,40 +4,33 @@ public class InteractableObject : MonoBehaviour
 {
     public GameObject InteractionIndicator;
     
-    private NPCControl npcRef = null;
+    private NPCControl    _npc = null;
+    private PlayerControl _pc  = null;
 
     void Start()
     {
-        npcRef = gameObject.GetComponent<NPCControl>();
+        _npc = gameObject.GetComponent<NPCControl>();
     }
 
     void OnTriggerEnter(Collider collider)
     {
-        PlayerControl pc = collider.gameObject.GetComponent<PlayerControl>();
+        _pc = _pc == null ? collider.gameObject.GetComponent<PlayerControl>() : _pc;
 
-        if ( pc != null )
+        if ( _pc != null )
         {
-            pc.InteractableObjectsInRange.Add(this);
-            InteractionIndicator.SetActive(true);
+            _pc.InteractableObjectsInRange.Add(this);
+                InteractionIndicator.SetActive(true);
         }
     }
 
     void OnTriggerExit(Collider collider)
     {
-        PlayerControl pc = collider.gameObject.GetComponent<PlayerControl>();
-
-        if ( pc != null )
-        {
-            pc.InteractableObjectsInRange.Remove(this);
+        _pc.InteractableObjectsInRange.Remove(this);
             InteractionIndicator.SetActive(false);
-        }
     }
 
     public void ProcessInteraction()
     {
-        if ( npcRef != null )
-        {
-            npcRef.ToggleColor();
-        }
+        if ( _npc != null ) { _npc.ToggleColor(); }
     }
 }
